@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String          @id @default(cuid())
+  name         String
+  email        String          @unique
+  passwordHash String
+  role         String
+  phone        String?
+  createdAt    DateTime        @default(now())
+  patient      PatientProfile?
+  doctor       DoctorProfile?
+}
+
+model PatientProfile {
+  id           String        @id @default(cuid())
+  userId       String        @unique
+  user         User          @relation(fields: [userId], references: [id])
+  appointments Appointment[]
+}
+
+model DoctorProfile {
+  id                  String        @id @default(cuid())
+  userId              String        @unique
+  user                User          @relation(fields: [userId], references: [id])
+  specialization      String
+  bio                 String
+  slotDurationMinutes Int           @default(30)
+  workingHours        String
+  appointments        Appointment[]
+  leaves              DoctorLeave[]
+  holds               SlotHold[]
+  locks               BookingLock[]
+}
+
+model DoctorLeave {
+  id        String        @id @default(cuid())
+  doctorId  String
+  doctor    DoctorProfile @relation(fields: [doctorId], references: [id])
+  date      DateTime
+  reason    String?
+  createdAt DateTime      @default(now())
+
+  @@unique([doctorId, date])
+}
+
+model SlotHold {
+  id        String        @id @default(cuid())
+  doctorId  String
+  doctor    DoctorProfile @relation(fields: [doctorId], references: [id])
+  patientId String
+  startAt   DateTime
+  endAt     DateTime
+  expiresAt DateTime
+  createdAt DateTime      @default(now())
+
+  @@index([doctorId, startAt, endAt])
+}
+
+model BookingLock {
+  id       String        @id @default(cuid())
+  doctorId String
+  doctor   DoctorProfile @relation(fields: [doctorId], references: [id])
+  startAt  DateTime
+  endAt    DateTime
+
+  @@unique([doctorId, startAt, endAt])
+}
+
+model Appointment {
+  id                 String            @id @default(cuid())
+  patientId          String
+  patient            PatientProfile    @relation(fields: [patientId], references: [id])
+  doctorId           String
+  doctor             DoctorProfile     @relation(fields: [doctorId], references: [id])
+  startAt            DateTime
+  endAt              DateTime
+  symptoms           String
+  status             String            @default("BOOKED")
+  preVisitSummary    String
+  urgencyLevel       String
+  postVisitSummary   String?
+  clinicalNotes      String?
+  prescription       String?
+  followUpDate       DateTime?
+  llmStatus          String            @default("SUCCESS")
+  cancellationReason String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  notifications      Notification[]
+  calendarEvents     CalendarEvent[]
+}
+
+model Notification {
+  id             String             @id @default(cuid())
+  appointmentId  String?
+  appointment    Appointment?       @relation(fields: [appointmentId], references: [id])
+  recipientEmail String
+  type           String
+  subject        String
+  message        String
+  status         String             @default("PENDING")
+  retryCount     Int                @default(0)
+  lastError      String?
+  createdAt      DateTime           @default(now())
+}
+
+model CalendarEvent {
+  id            String      @id @default(cuid())
+  appointmentId String
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  provider      String
+  externalId    String?
+  status        String
+  lastError     String?
+  createdAt     DateTime    @default(now())
+}

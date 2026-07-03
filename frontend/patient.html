@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Portal - MediFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex">
+  
+  <div class="w-full flex">
+    <aside class="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col justify-between p-6 shrink-0 h-screen sticky top-0">
+      <div class="space-y-8">
+        <div class="flex items-center space-x-3">
+          <div class="h-9 w-9 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">+</div>
+          <span class="font-bold text-xl text-slate-900 tracking-tight">MediFlow</span>
+        </div>
+        
+        <div class="flex items-center space-x-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
+          <div class="h-10 w-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 font-bold" id="userAvatar">P</div>
+          <div class="overflow-hidden">
+            <div class="font-semibold text-sm truncate text-slate-900" id="welcomeText">Patient Name</div>
+            <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Patient</span>
+          </div>
+        </div>
+        
+        <nav class="space-y-1">
+          <a class="flex items-center space-x-3 px-4 py-3 bg-blue-50 text-blue-700 rounded-xl font-semibold transition-all" href="#">
+            <span>Dashboard</span>
+          </a>
+          <a class="flex items-center space-x-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-slate-900 rounded-xl font-medium transition-all" href="#appointmentsSection">
+            <span>Appointments</span>
+          </a>
+        </nav>
+      </div>
+      
+      <div>
+        <button id="logoutBtn" class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-slate-200 hover:bg-rose-50 text-slate-600 hover:text-rose-600 font-medium rounded-xl transition-colors text-sm">
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+    
+    <main class="flex-1 p-6 md:p-10 max-w-5xl mx-auto w-full overflow-y-auto">
+      <header class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight text-slate-900">Patient Dashboard</h1>
+          <p class="text-slate-500 mt-0.5">Search doctors, schedule appointments, and review medical summaries.</p>
+        </div>
+        <div class="inline-flex items-center space-x-2 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-full px-3 py-1 text-xs font-semibold w-fit">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Live Connected</span>
+        </div>
+      </header>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col space-y-4">
+          <h3 class="font-bold text-lg text-slate-900">Find Care Providers</h3>
+          <form id="doctorSearchForm" class="flex gap-2">
+            <input id="specialization" placeholder="Specialization (e.g. Cardiology, Dermatology, General)" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition-all">
+            <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors shrink-0">Search</button>
+          </form>
+          <div id="doctorList" class="space-y-3 max-h-[360px] overflow-y-auto pr-1"></div>
+        </section>
+        
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+          <h3 class="font-bold text-lg text-slate-900">Book Appointment Slot</h3>
+          <form id="bookingForm" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="doctorSelect">Select Practitioner</label>
+              <select id="doctorSelect" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 transition-all"></select>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="startAt">Appointment Start</label>
+                <input id="startAt" type="datetime-local" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 transition-all">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="endAt">Appointment End</label>
+                <input id="endAt" type="datetime-local" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 transition-all">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="symptoms">Symptoms & Health Context</label>
+              <textarea id="symptoms" rows="3" placeholder="Briefly describe your symptoms or reason for visit..." required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 transition-all placeholder:text-slate-400"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-md transition-colors">Confirm Booking</button>
+          </form>
+        </section>
+      </div>
+      
+      <section id="appointmentsSection" class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mt-8 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-lg text-slate-900">My Scheduled Appointments</h3>
+          <button id="refreshAppointments" class="text-xs font-semibold text-blue-600 hover:bg-blue-50 border border-blue-100 rounded-xl px-3 py-2 transition-colors">Refresh Slots</button>
+        </div>
+        <div id="appointmentList" class="space-y-4"></div>
+      </section>
+    </main>
+  </div>
+  
+  <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-xl text-sm font-medium hidden">
+    <span id="toastText"></span>
+  </div>
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="portal.js"></script>
+  <script>
+    setupPatientPage();
+    // Support root logout triggers mapped dynamically
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>

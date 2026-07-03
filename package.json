@@ -1,0 +1,21 @@
+{
+  "name": "healthcare-appointment-manager",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Healthcare Appointment and Follow-up Manager with HTML CSS JS frontend and Node Express backend.",
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "start": "npm run start -w backend",
+    "build": "npm run build -w frontend",
+    "test": "npm run test -w backend",
+    "db:migrate": "npm run db:migrate -w backend",
+    "db:seed": "npm run db:seed -w backend"
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

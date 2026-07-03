@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal - MediFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex">
+  
+  <div class="w-full flex">
+    <aside class="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col justify-between p-6 shrink-0 h-screen sticky top-0">
+      <div class="space-y-8">
+        <div class="flex items-center space-x-3">
+          <div class="h-9 w-9 bg-slate-900 rounded-xl flex items-center justify-center text-white font-bold text-lg">M</div>
+          <span class="font-bold text-xl text-slate-900 tracking-tight">MediFlow</span>
+        </div>
+        
+        <div class="flex items-center space-x-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
+          <div class="h-10 w-10 bg-slate-900 rounded-xl flex items-center justify-center text-white font-bold" id="userAvatar">A</div>
+          <div class="overflow-hidden">
+            <div class="font-semibold text-sm truncate text-slate-900" id="welcomeText">Admin Name</div>
+            <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Admin</span>
+          </div>
+        </div>
+        
+        <nav class="space-y-1">
+          <a class="flex items-center space-x-3 px-4 py-3 bg-slate-100 text-slate-900 rounded-xl font-semibold transition-all" href="#">
+            <span>Management</span>
+          </a>
+          <a class="flex items-center space-x-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-slate-900 rounded-xl font-medium transition-all" href="#createDoctorSection">
+            <span>Add Doctor</span>
+          </a>
+          <a class="flex items-center space-x-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-slate-900 rounded-xl font-medium transition-all" href="#markLeaveSection">
+            <span>Doctor Leave</span>
+          </a>
+        </nav>
+      </div>
+      
+      <div>
+        <button id="logoutBtn" class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-slate-200 hover:bg-rose-50 text-slate-600 hover:text-rose-600 font-medium rounded-xl transition-colors text-sm">
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+    
+    <main class="flex-1 p-6 md:p-10 max-w-6xl mx-auto w-full overflow-y-auto">
+      <header class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight text-slate-900">Clinic Management</h1>
+          <p class="text-slate-500 mt-0.5">Add clinical practitioners, schedule leaves, and oversee active system users.</p>
+        </div>
+        <div class="inline-flex items-center space-x-2 bg-slate-900 text-white rounded-full px-3 py-1 text-xs font-semibold w-fit shadow-sm">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Live Connected</span>
+        </div>
+      </header>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+          <h3 class="font-bold text-lg text-slate-900">Active System Users</h3>
+          <div id="userList" class="space-y-2 max-h-[480px] overflow-y-auto"></div>
+          <div id="doctorList" class="hidden"></div>
+        </section>
+        
+        <section id="createDoctorSection" class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+          <h3 class="font-bold text-lg text-slate-900">Create Doctor Profile</h3>
+          <form id="createDoctorForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="doctorName">Doctor Name</label>
+              <input id="doctorName" placeholder="Dr. Jane Doe" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-slate-400 transition-all">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="doctorEmail">Email Address</label>
+              <input id="doctorEmail" type="email" placeholder="jane.doe@clinic.test" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-slate-400 transition-all">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="doctorPassword">Password</label>
+              <input id="doctorPassword" type="password" placeholder="••••••••" value="Password@123" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-slate-400 transition-all">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="doctorSpecialization">Specialization / Department</label>
+              <input id="doctorSpecialization" placeholder="Cardiology, Pediatrics, General..." required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-slate-400 transition-all">
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="doctorBio">Professional Bio</label>
+              <textarea id="doctorBio" rows="3" placeholder="Brief professional description..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-slate-400 transition-all"></textarea>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="slotDuration">Booking Slot Duration (minutes)</label>
+              <input id="slotDuration" type="number" value="30" min="10" step="5" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-slate-400 transition-all">
+            </div>
+            <button type="submit" class="sm:col-span-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 rounded-xl transition-colors mt-2">Create Doctor Profile</button>
+          </form>
+        </section>
+      </div>
+      
+      <section id="markLeaveSection" class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mt-8 space-y-4">
+        <h3 class="font-bold text-lg text-slate-900">Mark Doctor Leave</h3>
+        <form id="leaveForm" class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="leaveDoctorSelect">Select Practitioner</label>
+            <select id="leaveDoctorSelect" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none transition-all"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="leaveDate">Date of Leave</label>
+            <input id="leaveDate" type="date" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none transition-all">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1" for="leaveReason">Reason for Absence</label>
+            <input id="leaveReason" placeholder="Medical, vacation, etc." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none transition-all">
+          </div>
+          <button type="submit" class="sm:col-span-3 bg-rose-600 hover:bg-rose-700 text-white font-semibold py-3.5 rounded-xl transition-colors shadow-sm shadow-rose-600/10">Submit Leave</button>
+        </form>
+        <p class="text-xs text-slate-400 mt-2">Affected patient bookings are cancelled and notification records are created.</p>
+      </section>
+      
+      <div id="appointmentList" class="hidden"></div>
+    </main>
+  </div>
+  
+  <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-xl text-sm font-medium hidden">
+    <span id="toastText"></span>
+  </div>
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="portal.js"></script>
+  <script>
+    setupAdminPage();
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>
