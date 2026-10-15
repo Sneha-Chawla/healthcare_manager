@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:4000/api";
+const API_URL = "https://healthcare-manager-2-kvry.onrender.com/api";
 
 function showToast(message, isError = false) {
   const toast = document.getElementById("toast");
