@@ -1,5 +1,6 @@
 # Healthcare Appointment & Follow-up Manager
-
+ URL: https://healthcare-manager-frontend.onrender.com
+ 
 This is a placement-round project for a clinic appointment system. It has separate patient, doctor, and admin workflows, safe slot booking, doctor leave handling, LLM summaries, email/calendar integration points, and reminder jobs.
 
 I kept the frontend simple: **HTML, CSS, and JavaScript**. The backend is **Node.js + Express**. The database uses **SQLite + Prisma** so you do not need a complicated database setup.
